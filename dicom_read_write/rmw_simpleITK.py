@@ -23,6 +23,7 @@ import SimpleITK as sitk
 import sys
 import time
 import os
+import numpy as np
 
 from bitarray import bitarray
 
@@ -103,7 +104,7 @@ modification_date = time.strftime("%Y%m%d")
 # cannot start with zero, and separated by a '.' We create a unique series ID
 # using the date and time.
 # Tags of interest:
-rows, cols = 20, 20
+rows, cols = 4, 4
 direction = filtered_image.GetDirection()
 series_tag_values = [
                         (k, series_reader.GetMetaData(0, k))
@@ -136,7 +137,7 @@ series_tag_values = [
                     ("6000|0050", r"1\1"),  #
                     ("6000|0100", "1"),  #
                     ("6000|0102", "0"),  #
-                    ("6000|3000", create_dummy_mask(rows,cols))
+                    ("6000|3000", "1111000011110000")
                     # TODO the overlay array is not right at the moment
                     # probably something wrong with the types
 
@@ -164,5 +165,8 @@ for i in range(filtered_image.GetDepth()):
     # in DICOM format.
     writer.SetFileName(os.path.join(sys.argv[2], str(i) + '.dcm'))
     writer.Execute(image_slice)
-sys.exit(0)
 
+
+
+
+sys.exit(0)
