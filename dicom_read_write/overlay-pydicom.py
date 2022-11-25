@@ -18,15 +18,15 @@ def determine_overlay_vr(ds):
 
 
 def generate_overlay_mask(rows, cols):
-  x = numpy.repeat(0, cols)
-  y = numpy.repeat(1, cols)
-  arr1 = numpy.repeat(x, rows/2)
-  arr2 = numpy.repeat(y, rows/2)
-  return numpy.append(arr1, arr2)
+  arr = numpy.zeros((rows, cols))
+  for i in range(0, rows):
+    for j in range(0, cols):
+      if (i > rows/2 or j > cols/2) and not (i > rows/2 and j > cols/2):
+        arr[i, j] = 1
+  return arr
 
 
 def add_overlay(ds, overlay_mask):
-  print(overlay_mask.shape)
   packed_mask = pack_bits(overlay_mask)
   vr = determine_overlay_vr(ds)
 
