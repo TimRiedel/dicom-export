@@ -2,6 +2,8 @@
 /build/
 /lib/
 .idea/*
+venv*
+.venv
 
 .DS_Store
 coverage
