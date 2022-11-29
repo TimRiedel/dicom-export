@@ -1,11 +1,8 @@
-import { loadPyodide } from "pyodide";
-const fetch = require("node-fetch");
-
-async function loadPythonFile(filePath: string) {
+async function loadPythonFile(filePath) {
     const fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
-    console.log(fileName);
+    // console.log(fileName);
     const moduleName = fileName.substring(0, fileName.lastIndexOf("."));
-    console.log(moduleName);
+    // console.log(moduleName);
 
     //TODO: Pyodide is loaded multiple times. Is this necessary?
     let pyodide = await loadPyodide();
@@ -20,9 +17,16 @@ async function loadPythonFile(filePath: string) {
 
 async function main() {
     let pyodide = await loadPyodide();
-    await pyodide.loadPackage(["micropip", "numpy"]);
-    const micropip = pyodide.pyimport("micropip");
-    await micropip.install("pydicom");
-    const overlay = await loadPythonFile("dicom/overlay.py");
-    overlay.add();
+    await pyodide.loadPackage("numpy");
+    // const micropip = pyodide.pyimport("micropip");
+    // await micropip.install("pydicom");
+    // pyodide.runPython(`
+    //     import numpy
+    //     print(numpy.zeros(5))
+    //     `);
+
+    const overlay = await loadPythonFile("dicom/hello.py");
+    console.log("Test1 from JS");
+    overlay.helloWorld();
+    console.log("Test2 from JS");
 }

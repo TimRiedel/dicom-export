@@ -1,6 +1,5 @@
 from pathlib import Path
 import numpy
-import matplotlib.pyplot as plt
 from pydicom import dcmread
 from pydicom.pixel_data_handlers.numpy_handler import pack_bits
 
@@ -23,6 +22,7 @@ def generate_overlay_mask(rows, cols):
     for j in range(0, cols):
       if (i > rows/2 or j > cols/2) and not (i > rows/2 and j > cols/2):
         arr[i, j] = 1
+      
   return arr
 
 
