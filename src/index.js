@@ -17,11 +17,19 @@ async function main() {
     let pyodide = await loadPyodide();
     await pyodide.loadPackage("numpy");
     await pyodide.loadPackage("micropip");
+
     const micropip = pyodide.pyimport("micropip");
     await micropip.install("pydicom");
 
-    const hello = await loadPythonFile("dicom/hello.py", pyodide);
-    console.log("Test1 from JS");
-    hello.helloWorld();
-    console.log("Test2 from JS");
+    const overlay = await loadPythonFile(
+        "dicom_read_write/overlay-pydicom.py",
+        pyodide
+    );
+
+    let response = await fetch("http://localhost:8000/data/0.dcm");
+    let buffer = await response.text();
+    pyodide.FS.writeFile("0.dcm", buffer);
+
+    console.log("Test from JS");
+    overlay.write_dicom_overlay("0.dcm");
 }

@@ -1,6 +1,7 @@
 from pathlib import Path
 import numpy
-from pydicom import dcmread
+import pydicom
+# from pydicom import dcmread
 from pydicom.pixel_data_handlers.numpy_handler import pack_bits
 
 
@@ -30,8 +31,8 @@ def add_overlay(ds, overlay_mask):
   packed_mask = pack_bits(overlay_mask)
   vr = determine_overlay_vr(ds)
 
-  ds.add_new(0x60000010, 'US', image_data.shape[0])   # Overlay Plane Rows
-  ds.add_new(0x60000011, 'US', image_data.shape[0])   # Overlay Plane Columns
+  ds.add_new(0x60000010, 'US', ds.pixel_array.shape[0])   # Overlay Plane Rows
+  ds.add_new(0x60000011, 'US', ds.pixel_array.shape[0])   # Overlay Plane Columns
   ds.add_new(0x60000040, 'CS', "R")                   # Overlay Type
   ds.add_new(0x60000045, 'LO', "AUTOMATED")           # Overlay Subtype
   ds.add_new(0x60000050, 'SS', [1, 1])                # Overlay Origin
@@ -40,11 +41,23 @@ def add_overlay(ds, overlay_mask):
   ds.add_new(0x60003000,  vr , packed_mask)           # Overlay Data
 
 
-base_dir = Path("./data")
-ds = dcmread(base_dir/"0.dcm")
-image_data = ds.pixel_array
+def write_dicom_overlay(filePath):
+  print(filePath)
+  ds = pydicom.dcmread(filePath)
+  print(ds.StudyDate)
+  # image_data = ds.pixel_array
 
-mask = generate_overlay_mask(image_data.shape[0], image_data.shape[1])
-add_overlay(ds, mask)
+  # mask = generate_overlay_mask(image_data.shape[0], image_data.shape[1])
+  # add_overlay(ds, mask)
 
-ds.save_as(base_dir/'out'/'0-out.dcm')
+  # ds.save_as(base_dir/'out'/'0-out.dcm')
+
+def old_main():
+  base_dir = Path("./data")
+  ds = pydicom.dcmread(base_dir/"0.dcm")
+  image_data = ds.pixel_array
+
+  mask = generate_overlay_mask(image_data.shape[0], image_data.shape[1])
+  add_overlay(ds, mask)
+
+  ds.save_as(base_dir/'out'/'0-out.dcm')
