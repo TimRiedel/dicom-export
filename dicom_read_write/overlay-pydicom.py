@@ -42,9 +42,14 @@ def add_overlay(ds, overlay_mask):
 
 
 def write_dicom_overlay(filePath):
-  print(filePath)
+  print("File Path from Python: " + filePath)
+  with open("0.dcm", "rb") as fh:
+        data = fh.read()
+  print(data)
+
   ds = pydicom.dcmread(filePath)
-  print(ds.StudyDate)
+  print(ds)
+  # print(ds.StudyDate)
   # image_data = ds.pixel_array
 
   # mask = generate_overlay_mask(image_data.shape[0], image_data.shape[1])

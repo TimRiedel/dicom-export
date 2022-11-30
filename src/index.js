@@ -27,8 +27,16 @@ async function main() {
     );
 
     let response = await fetch("http://localhost:8000/data/0.dcm");
-    let buffer = await response.text();
-    pyodide.FS.writeFile("0.dcm", buffer);
+    let buffer = await response.arrayBuffer();
+    let view = new DataView(buffer);
+    console.log(view);
+    pyodide.FS.writeFile("0.dcm", view, { encoding: "binary" });
+    // pyodide.runPython(`
+    //     import numpy
+    //     import pydicom
+    //     ds = pydicom.dcmread("0.dcm")
+    //     print(ds)
+    // `);
 
     console.log("Test from JS");
     overlay.write_dicom_overlay("0.dcm");
