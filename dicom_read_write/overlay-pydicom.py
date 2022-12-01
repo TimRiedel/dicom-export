@@ -17,12 +17,21 @@ def determine_overlay_vr(ds):
   return overlay_vr
 
 
-def generate_overlay_mask(rows, cols):
+def generate_chess_overlay_mask(rows, cols):
   arr = numpy.zeros((rows, cols))
   for i in range(0, rows):
     for j in range(0, cols):
       if (i > rows/2 or j > cols/2) and not (i > rows/2 and j > cols/2):
         arr[i, j] = 1
+      
+  return arr
+
+def generate_chess2_overlay_mask(rows, cols):
+  arr = numpy.ones((rows, cols))
+  for i in range(0, rows):
+    for j in range(0, cols):
+      if (i > rows/2 or j > cols/2) and not (i > rows/2 and j > cols/2):
+        arr[i, j] = 0
       
   return arr
 
@@ -42,20 +51,20 @@ def add_overlay(ds, overlay_mask):
 
 
 def write_dicom_overlay(filePath):
-  print("File Path from Python: " + filePath)
-  with open("0.dcm", "rb") as fh:
-        data = fh.read()
-  print(data)
+  # print("File Path from Python: " + filePath)
+  # with open("0.dcm", "r") as fh:
+  #       data = fh.read()
+  # print("Data from Python: " + data)
 
   ds = pydicom.dcmread(filePath)
-  print(ds)
+  # print(ds)
   # print(ds.StudyDate)
-  # image_data = ds.pixel_array
+  image_data = ds.pixel_array
 
-  # mask = generate_overlay_mask(image_data.shape[0], image_data.shape[1])
-  # add_overlay(ds, mask)
+  mask = generate_chess2_overlay_mask(image_data.shape[0], image_data.shape[1])
+  add_overlay(ds, mask)
 
-  # ds.save_as(base_dir/'out'/'0-out.dcm')
+  ds.save_as('0-out.dcm')
 
 def old_main():
   base_dir = Path("./data")

@@ -26,18 +26,25 @@ async function main() {
         pyodide
     );
 
+    await readDicom(pyodide);
+
+    overlay.write_dicom_overlay("0.dcm");
+
+    downloadDicom(pyodide);
+}
+
+async function readDicom(pyodide) {
     let response = await fetch("http://localhost:8000/data/0.dcm");
     let buffer = await response.arrayBuffer();
-    let view = new DataView(buffer);
-    console.log(view);
+    let view = new Uint8Array(buffer);
     pyodide.FS.writeFile("0.dcm", view, { encoding: "binary" });
-    // pyodide.runPython(`
-    //     import numpy
-    //     import pydicom
-    //     ds = pydicom.dcmread("0.dcm")
-    //     print(ds)
-    // `);
+    // console.log("Response: " + response);
+    // console.log("Buffer view: " + view);
+}
 
-    console.log("Test from JS");
-    overlay.write_dicom_overlay("0.dcm");
+function downloadDicom(pyodide) {
+    let file = pyodide.FS.readFile("0-out.dcm", { encoding: "binary" });
+    const blob = new Blob([file], { type: "application/dicom" });
+    let url = window.URL.createObjectURL(blob);
+    window.location.assign(url);
 }
