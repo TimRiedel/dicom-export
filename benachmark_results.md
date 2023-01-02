@@ -2,7 +2,7 @@
 
 I was using a dicom series with 31 files.
 
-### Python file pydicom
+### Pure python pydicom
 
 155 files a 500KB 34.64 sec
 155 files a 500KB 34.25 sec
