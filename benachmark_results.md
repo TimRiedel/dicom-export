@@ -1,6 +1,6 @@
 # Benchmarking
 
-I was a dicom series with 31 files.
+I was using a dicom series with 31 files.
 
 ### Python file pydicom
 
