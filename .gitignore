@@ -8,3 +8,5 @@ venv*
 .DS_Store
 coverage
 *.log
+
+data*
