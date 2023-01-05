@@ -140,9 +140,6 @@ series_tag_values = [
                     ("6000|3000", "1111000011110000")
                     # TODO the overlay array is not right at the moment
                     # probably something wrong with the types
-
-                    
-
                     ]
 
 for i in range(filtered_image.GetDepth()):
@@ -165,8 +162,5 @@ for i in range(filtered_image.GetDepth()):
     # in DICOM format.
     writer.SetFileName(os.path.join(sys.argv[2], str(i) + '.dcm'))
     writer.Execute(image_slice)
-
-
-
 
 sys.exit(0)
